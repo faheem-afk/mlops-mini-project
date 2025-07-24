@@ -14,13 +14,11 @@ from mlflow.models.signature import infer_signature
 
 load_dotenv()
 
-mlflow.set_tracking_uri(os.getenv('MLFLOW-TRACKING-URI'))
+mlflow.set_tracking_uri("MLFLOW_TRACKING_URI")
 
 dagshub.init(repo_owner='faheem-afk', repo_name='mlops-mini-project', mlflow=True)
 
 warnings.filterwarnings('ignore')
-
-mlflow.set_experiment("dvc-pipeline")
 
 def save_model_info(run_id_:str, model_name_:str, file_path_:str):
     model_info_ = {
@@ -29,6 +27,7 @@ def save_model_info(run_id_:str, model_name_:str, file_path_:str):
     }
     json.dump(model_info_, open(file_path_, 'w'), indent=4)
 
+mlflow.set_experiment("mlops-mini-project")
 with mlflow.start_run() as run:
     log_model = joblib.load('models/model.joblib')
 

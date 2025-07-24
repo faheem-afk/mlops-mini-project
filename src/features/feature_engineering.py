@@ -1,3 +1,4 @@
+import joblib
 import os
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
@@ -38,6 +39,9 @@ os.makedirs('data/features', exist_ok=True)
 
 train_bow.to_csv("data/features/train_bow.csv", index=False)
 test_bow.to_csv("data/features/test_bow.csv", index=False)
+
+joblib.dump(vectorizer, 'models/vectorizer.joblib')
+
 
 
 

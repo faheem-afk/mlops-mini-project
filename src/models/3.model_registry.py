@@ -15,7 +15,6 @@ def register_model(model_info_: dict):
         stage=stage_,
         archive_existing_versions=False
     )
-    
 
 
 model_info = json.load(open('reports/experiment_info.json', 'r'))

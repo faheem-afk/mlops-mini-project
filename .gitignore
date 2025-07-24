@@ -4,7 +4,7 @@ __pycache__/
 
 # C extensions
 *.so
-
+MLFLOW_TRACKING_URI
 mlops-mini-project
 # Distribution / packaging
 .Python
