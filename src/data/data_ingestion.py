@@ -7,7 +7,6 @@ import yaml
 
 warnings.filterwarnings('ignore')
 
-
 def load_params(param_path: str) -> float:
 
     test_size = yaml.safe_load(open(param_path, 'r'))['data_ingestion']['test_size']
@@ -17,7 +16,6 @@ def load_params(param_path: str) -> float:
 def read_data(url: str) -> pd.DataFrame:
     df = pd.read_csv(url)
     return df
-
 
 def process_data(df: str, test_size: float) -> tuple:
 # delete tweet id
@@ -29,12 +27,11 @@ def process_data(df: str, test_size: float) -> tuple:
     
     train_data, test_data = train_test_split(final_df, test_size=test_size, random_state=42)
 
-    data_path = os.path.join('data', 'raw')
+    data_path = os.path.join('data', 'interim')
     
     return data_path, train_data, test_data
 
 def save_data(data_path: str, train_data: pd.DataFrame, test_data: str) -> None:    
-
 
     os.makedirs(data_path, exist_ok=True)
 

@@ -1,59 +1,72 @@
-import numpy as np
 import pandas as pd
 import json
-from sklearn.model_selection import train_test_split
-
-import re
-import nltk
-import string
-from nltk.corpus import stopwords
-from nltk.stem import SnowballStemmer, WordNetLemmatizer
-from sklearn.feature_extraction.text import CountVectorizer
-
-
-import xgboost as xgb
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import precision_score, recall_score, roc_auc_score, classification_report
 import warnings
 import joblib
+import dagshub
+import mlflow
+from dotenv import load_dotenv
+import os
+import json
+from mlflow.models.signature import infer_signature
 
+
+load_dotenv()
+
+mlflow.set_tracking_uri(os.getenv('MLFLOW-TRACKING-URI'))
+
+dagshub.init(repo_owner='faheem-afk', repo_name='mlops-mini-project', mlflow=True)
 
 warnings.filterwarnings('ignore')
 
+mlflow.set_experiment("dvc-pipeline")
 
-xgb_model = joblib.load('models/model.joblib')
+with mlflow.start_run():
+    log_model = joblib.load('models/model.joblib')
 
-test_bow = pd.read_csv(f"data/features/test_bow.csv")
+    test_bow = pd.read_csv(f"data/features/test_bow.csv")
 
-X_test_bow = test_bow.iloc[:, :-1].values
-y_test = test_bow.iloc[:, -1].values
+    X_test_bow = test_bow.iloc[:, :-1]
+    y_test = test_bow.iloc[:, -1]
 
-# Make predictions
-y_pred = xgb_model.predict(X_test_bow)
+    # Make predictions
+    y_pred = log_model.predict(X_test_bow)
 
-# Evaluate the model
-accuracy = accuracy_score(y_test, y_pred)
-classification_rep = classification_report(y_test, y_pred)
+    # Evaluate the model
+    accuracy = accuracy_score(y_test, y_pred)
+    classification_rep = classification_report(y_test, y_pred)
 
-# Make predictions
-y_pred = xgb_model.predict(X_test_bow)
-y_pred_proba = xgb_model.predict_proba(X_test_bow)[:, 1]
+    # Make predictions
+    y_pred = log_model.predict(X_test_bow)
+    y_pred_proba = log_model.predict_proba(X_test_bow)[:, 1]
 
-# Calculate evaluation metrics
-precision = precision_score(y_test, y_pred)
-recall = recall_score(y_test, y_pred)
-auc = roc_auc_score(y_test, y_pred_proba)
+    # Calculate evaluation metrics
+    precision = precision_score(y_test, y_pred)
+    recall = recall_score(y_test, y_pred)
+    auc = roc_auc_score(y_test, y_pred_proba)
 
+    results = {
+        'precision': float(precision),
+        'recall': float(recall),
+        'auc': float(auc),
 
-import json
+    }
+    
+    mlflow.log_metrics(results)
+    
+    if hasattr(log_model, 'get_params'):
+        params= log_model.get_params()
+        for param_name, param_value in params.items():
+            mlflow.log_param(param_name, param_value)
+            
+    signature = infer_signature(X_test_bow, y_pred)
+    
+    input_examples = X_test_bow.iloc[:5, :]
+    
+    mlflow.log_artifact("data/features/test_bow.csv", artifact_path="data")
+    mlflow.sklearn.log_model(log_model, "logisticRegression", signature=signature, input_example=input_examples)
+    with open('reports/metrics.json', 'w') as f:
+        json.dump(results, f, indent=2)
 
-results = {
-    'precision': float(precision),
-    'recall': float(recall),
-    'auc': float(auc),
-    'y_pred': y_pred.tolist(),
-
-}
-
-with open('results.json', 'w') as f:
-    json.dump(results, f, indent=2)
+    mlflow.log_artifact("reports/metrics.json")

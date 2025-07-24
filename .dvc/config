@@ -1,0 +1,4 @@
+[core]
+    remote = mlops-mini-project
+['remote "mlops-mini-project"']
+    url = /var/folders/xh/dlr59jp10wj5hx57q_rhfy3c0000gn/T/

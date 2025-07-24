@@ -1,0 +1,102 @@
+schema: '2.0'
+stages:
+  data-ingestion:
+    cmd: python src/data/data_ingestion.py
+    deps:
+    - path: src/data/data_ingestion.py
+      hash: md5
+      md5: 49d77a1779355488c8ed6b4f019a0d26
+      size: 1490
+    params:
+      params.yaml:
+        data_ingestion.test_size: 0.15
+    outs:
+    - path: data/interim/test_data.csv
+      hash: md5
+      md5: 488f6f98ba5069bc6f55f06d93e2c907
+      size: 120858
+    - path: data/interim/train_data.csv
+      hash: md5
+      md5: bcab5b4f3925498934432d91e8b95ddd
+      size: 696739
+  data_preprocessing:
+    cmd: python src/data/data_preprocessing.py
+    deps:
+    - path: data/interim
+      hash: md5
+      md5: 6a3496f58081115809c39d152f5ca6fb.dir
+      size: 817597
+      nfiles: 2
+    - path: src/data/data_preprocessing.py
+      hash: md5
+      md5: fc7f51cbfa8c798bd51d88681ff31717
+      size: 2180
+    outs:
+    - path: data/preprocessed/test_preprocessed_data.csv
+      hash: md5
+      md5: dfffacf177c35f2de3d6f3eeab18d756
+      size: 82549
+    - path: data/preprocessed/train_preprocessed_data.csv
+      hash: md5
+      md5: 3ac990e63b41e344487cd930d995362a
+      size: 473285
+  feature_engineering:
+    cmd: python src/features/feature_engineering.py
+    deps:
+    - path: data/preprocessed
+      hash: md5
+      md5: fcbc5e70e0017fca575ca6a2720e6583.dir
+      size: 555834
+      nfiles: 2
+    - path: src/features/feature_engineering.py
+      hash: md5
+      md5: c94250accfdf8716bc768cdf31a7aaaf
+      size: 1302
+    params:
+      params.yaml:
+        feature_engineering.max_features: 1000
+    outs:
+    - path: data/features/test_bow.csv
+      hash: md5
+      md5: 45eefdf05001fda52227db522e5cba65
+      size: 3119008
+    - path: data/features/train_bow.csv
+      hash: md5
+      md5: 29d15fff3d3e995919ba0915f0245600
+      size: 17653528
+  model_building:
+    cmd: python src/models/model_building.py
+    deps:
+    - path: data/features/train_bow.csv
+      hash: md5
+      md5: 29d15fff3d3e995919ba0915f0245600
+      size: 17653528
+    - path: src/models/model_building.py
+      hash: md5
+      md5: afacf349502e456b5d9fbe4647f7c64f
+      size: 470
+    outs:
+    - path: models/model.joblib
+      hash: md5
+      md5: 0bfa9f489e0a69ee304def46874b143e
+      size: 15019
+  model_evaluation:
+    cmd: python src/models/evaluation.py
+    deps:
+    - path: data/features/test_bow.csv
+      hash: md5
+      md5: 45eefdf05001fda52227db522e5cba65
+      size: 3119008
+    - path: models/model.joblib
+      hash: md5
+      md5: 0bfa9f489e0a69ee304def46874b143e
+      size: 15019
+    - path: src/models/evaluation.py
+      hash: md5
+      md5: 2088bb5ca0fcae3efa1b87deb23180e9
+      size: 2079
+    outs:
+    - path: reports/metrics.json
+      hash: md5
+      md5: 805f2d4534dd95fac49edcf041353d4e
+      size: 98

@@ -5,8 +5,8 @@ from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 import pandas as pd
 
-train_df = pd.read_csv(f"data/raw/train_data.csv")
-test_df = pd.read_csv(f"data/raw/test_data.csv")
+train_df = pd.read_csv(f"data/interim/train_data.csv")
+test_df = pd.read_csv(f"data/interim/test_data.csv")
 
 def lemmatization(text):
     lemmatizer= WordNetLemmatizer()
