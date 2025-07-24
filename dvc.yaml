@@ -30,19 +30,19 @@ stages:
     - data/features/test_bow.csv
 
   model_building:
-    cmd: python src/models/model_building.py
+    cmd: python src/models/1.model_building.py
     deps:
     - data/features/train_bow.csv
-    - src/models/model_building.py
+    - src/models/1.model_building.py
     outs:
     - models/model.joblib
 
   model_evaluation:
-    cmd: python src/models/evaluation.py
+    cmd: python src/models/2.evaluation.py
     deps:
     - data/features/test_bow.csv
     - models/model.joblib
-    - src/models/evaluation.py
+    - src/models/2.evaluation.py
     metrics:
     - reports/metrics.json
 

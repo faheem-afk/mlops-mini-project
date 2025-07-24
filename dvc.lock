@@ -65,13 +65,13 @@ stages:
       md5: 29d15fff3d3e995919ba0915f0245600
       size: 17653528
   model_building:
-    cmd: python src/models/model_building.py
+    cmd: python src/models/1.model_building.py
     deps:
     - path: data/features/train_bow.csv
       hash: md5
       md5: 29d15fff3d3e995919ba0915f0245600
       size: 17653528
-    - path: src/models/model_building.py
+    - path: src/models/1.model_building.py
       hash: md5
       md5: afacf349502e456b5d9fbe4647f7c64f
       size: 470
@@ -81,7 +81,7 @@ stages:
       md5: 0bfa9f489e0a69ee304def46874b143e
       size: 15019
   model_evaluation:
-    cmd: python src/models/evaluation.py
+    cmd: python src/models/2.evaluation.py
     deps:
     - path: data/features/test_bow.csv
       hash: md5
@@ -91,10 +91,10 @@ stages:
       hash: md5
       md5: 0bfa9f489e0a69ee304def46874b143e
       size: 15019
-    - path: src/models/evaluation.py
+    - path: src/models/2.evaluation.py
       hash: md5
-      md5: 2088bb5ca0fcae3efa1b87deb23180e9
-      size: 2079
+      md5: a10a458c6f6942eeae225d22097f2f96
+      size: 2407
     outs:
     - path: reports/metrics.json
       hash: md5
