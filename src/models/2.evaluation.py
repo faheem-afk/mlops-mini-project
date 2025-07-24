@@ -25,10 +25,9 @@ mlflow.set_experiment("dvc-pipeline")
 def save_model_info(run_id_:str, model_name_:str, file_path_:str):
     model_info_ = {
         "run_id": run_id_,
-        "model_name": model_name_,
-        "file_path": file_path_
+        "model_name": model_name_
     }
-    json.dump(model_info_, open(file_path_, 'w'))
+    json.dump(model_info_, open(file_path_, 'w'), indent=4)
 
 with mlflow.start_run() as run:
     log_model = joblib.load('models/model.joblib')
@@ -75,7 +74,8 @@ with mlflow.start_run() as run:
     mlflow.log_artifact("data/features/test_bow.csv", artifact_path="data")
     mlflow.sklearn.log_model(log_model, "logisticRegression", signature=signature, input_example=input_examples)
     
-    save_model_info(run.info.run_id, 'model', 'reports/experiment_info.json')
+    save_model_info(run.info.run_id, "logisticRegression", 'reports/experiment_info.json')
+    
     with open('reports/metrics.json', 'w') as f:
         json.dump(results, f, indent=2)
 
