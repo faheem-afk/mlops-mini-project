@@ -1,7 +1,14 @@
+import os
+import sys
+
+import mlflow.artifacts
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 from flask import Flask, render_template, request
 import warnings
 import joblib
-import dagshub
+import json
 import mlflow
 from dotenv import load_dotenv
 from src.data.data_preprocessing import normalize_text 
@@ -13,6 +20,15 @@ app = Flask(__name__)
 load_dotenv()
 warnings.filterwarnings('ignore')
 
+model_name = 'logisticRegression'
+model_info = json.load(open('reports/experiment_info.json', 'r'))
+
+model_uri = f"runs:/{model_info['run_id']}/{model_name}"
+log_model = mlflow.sklearn.load_model(model_uri)
+
+artifact_uri_ = f"runs:/{model_info['run_id']}/preprocessors/vectorizer.joblib"
+local_path = mlflow.artifacts.download_artifacts(artifact_uri=artifact_uri_)
+vectorizer_ = joblib.load(local_path)
 
 @app.route("/")
 def home():
@@ -27,15 +43,10 @@ def prediction():
     
     processed_df_ = normalize_text(df_)
     
-    mlflow.set_tracking_uri("MLFLOW_TRACKING_URI")
-
-    dagshub.init(repo_owner='faheem-afk', repo_name='mlops-mini-project', mlflow=True)
+   
 
     mlflow.set_experiment("mlops-mini-project")
-    with mlflow.start_run() as run:
-        log_model = joblib.load('models/model.joblib')
-        
-        vectorizer_ = joblib.load('models/vectorizer.joblib')
+    with mlflow.start_run():
         
         transformed_df_ = vectorizer_.transform(processed_df_)
         
@@ -47,5 +58,5 @@ def prediction():
             return "Happy"
 
         
-app.run(debug=True, port=5007)
+app.run(debug=True, port=5008)
 
