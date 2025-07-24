@@ -1,4 +1,6 @@
 [core]
-    remote = mlops-mini-project
+    remote = myremote
 ['remote "mlops-mini-project"']
     url = /var/folders/xh/dlr59jp10wj5hx57q_rhfy3c0000gn/T/
+['remote "myremote"']
+    url = s3://faheem-afk-mini-project-bucket
