@@ -14,7 +14,7 @@ from mlflow.models.signature import infer_signature
 
 load_dotenv()
 
-mlflow.set_tracking_uri("MLFLOW_TRACKING_URI")
+mlflow.set_tracking_uri("https://dagshub.com/faheem-afk/mlops-mini-project.mlflow")
 
 dagshub.init(repo_owner='faheem-afk', repo_name='mlops-mini-project', mlflow=True)
 
@@ -27,7 +27,7 @@ def save_model_info(run_id_:str, model_name_:str, file_path_:str):
     }
     json.dump(model_info_, open(file_path_, 'w'), indent=4)
 
-mlflow.set_experiment("mlops-mini-project")
+mlflow.set_experiment("mlops-mini-projecT")
 with mlflow.start_run() as run:
     log_model = joblib.load('models/model.joblib')
 

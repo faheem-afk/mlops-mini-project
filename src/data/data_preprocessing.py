@@ -60,11 +60,16 @@ def normalize_text(df):
     df.content=df.content.apply(lambda content : removing_punctuations(content))
     df.content=df.content.apply(lambda content : removing_urls(content))
     df.content=df.content.apply(lambda content : lemmatization(content))
+    
     return df
 
+
+# train_processed_data = normalize_text(train_df)
+# test_processed_data = normalize_text(test_df)
+
 if __name__ == "__main__":
-    train_processed_data = normalize_text(train_df)
-    test_processed_data = normalize_text(test_df)
+    train_processed_data = train_df
+    test_processed_data = test_df
 
 
     os.makedirs('data/preprocessed', exist_ok=True)

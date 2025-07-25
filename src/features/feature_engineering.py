@@ -8,7 +8,7 @@ import yaml
 
 warnings.filterwarnings('ignore')
 
-max_features = yaml.safe_load(open('params.yaml', 'r'))['feature_engineering']['max_features']
+# max_features = yaml.safe_load(open('params.yaml', 'r'))['feature_engineering']['max_features']
 
 train_preprocessed_df = pd.read_csv(f"data/preprocessed/train_preprocessed_data.csv").dropna(axis=0)
 test_preprocessed_df = pd.read_csv(f"data/preprocessed/test_preprocessed_data.csv").dropna(axis=0)
@@ -21,7 +21,7 @@ y_test = test_preprocessed_df['sentiment'].values
 
         
 # Apply Bag of Words (CountVectorizer)
-vectorizer = CountVectorizer(max_features=max_features)
+vectorizer = CountVectorizer()
 
 # # Fit the vectorizer on the training data and transform it
 X_train_bow = vectorizer.fit_transform(X_train)

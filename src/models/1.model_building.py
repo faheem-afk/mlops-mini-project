@@ -1,7 +1,6 @@
 import warnings
 import pandas as pd
 import joblib
-import yaml
 from sklearn.linear_model import LogisticRegression
 
 warnings.filterwarnings('ignore')
