@@ -5,6 +5,7 @@ import json
 import warnings
 from dotenv import load_dotenv
 import pandas as pd
+import joblib
 
 load_dotenv()
 
@@ -25,8 +26,9 @@ class TestModelLoading(unittest.TestCase):
         cls.model = mlflow.sklearn.load_model(model_uri)
         artifact_uri_ = f"""
         runs:/{model_info['run_id']}/vectorizer/vectorizer.joblib"""
-        cls.vectorizer = mlflow.artifacts. \
+        local_path = mlflow.artifacts. \
             download_artifacts(artifact_uri=artifact_uri_)
+        cls.vectorizer = joblib.load(local_path)
         return (
             (cls.model, cls.vectorizer) if
             (cls.model and cls.vectorizer) else None)
