@@ -4,6 +4,7 @@ import os
 import json
 import warnings
 from dotenv import load_dotenv
+import pandas as pd
 
 load_dotenv()
 
@@ -16,16 +17,31 @@ class TestModelLoading(unittest.TestCase):
         os.environ['MLFLOW_TRACKING_USERNAME'] = dagshub_token
         os.environ['MLFLOW_TRACKING_PASSWORD'] = dagshub_token
         mlflow.set_tracking_uri(
-            "https://dagshub.com/faheem-afk/mlops-mini-project.mlflow")        
+            "https://dagshub.com/faheem-afk/mlops-mini-project.mlflow")
         model_name = 'logisticRegression'
         model_info = json.load(open('reports/experiment_info.json', 'r'))
         model_uri = f"runs:/{model_info['run_id']}/{model_name}"
         model_uri = f"runs:/{model_info['run_id']}/{model_name}"
         cls.model = mlflow.sklearn.load_model(model_uri)
-        return cls.model if cls.model else None
+        artifact_uri_ = f"""
+        runs:/{model_info['run_id']}/vectorizer/vectorizer.joblib"""
+        cls.vectorizer = mlflow.artifacts. \
+            download_artifacts(artifact_uri=artifact_uri_)
+        return (
+            (cls.model, cls.vectorizer) if
+            (cls.model and cls.vectorizer) else None)
 
     def test_model_loaded(self):
         self.assertIsNotNone(self.model)
+
+    def test_model_signature(self):
+        input_text = 'hi how are you'
+        input_df = pd.DataFrame([[input_text]])
+        input_data_df = self.vectorizer.transform(input_df)
+        prediction = self.model.predict(input_data_df)
+        self.assertEqual(input_df.shape[1],
+                         len(self.vectorizer.get_features_names_out()))
+        self.assertEqual(len(prediction), input_df.shape.shape[0])
 
 
 if __name__ == "__main__":
