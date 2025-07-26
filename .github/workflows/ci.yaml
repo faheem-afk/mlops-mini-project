@@ -58,7 +58,7 @@ jobs:
 
       - name: run dvc
         env:
-          DAGSHUB_PAT: ${{ secrets. }}
+          DAGSHUB_PAT: ${{ secrets.CI }}
         run: dvc repro
 
 
