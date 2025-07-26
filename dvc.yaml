@@ -28,6 +28,7 @@ stages:
     outs:
     - data/features/train_bow.csv
     - data/features/test_bow.csv
+    - models/vectorizer.joblib
 
   model_building:
     cmd: python src/models/1.model_building.py
