@@ -1,0 +1,64 @@
+name: CI
+
+on: 
+  push: 
+    branch: 
+      - master
+  
+  pull_request:
+    branch: 
+      - master
+
+jobs: 
+  linting: 
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: code checkout
+        uses: actions/checkout@v3
+
+      - name: setup python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.12.2'
+
+      - name: install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install flake8
+
+      - name: run flake8
+        run: |
+          flake8 src/data/data_ingestion.py
+          flake8 src/data/data_preprocessing.py
+          flake8 src/features/feature_engineering.py
+          flake8 src/models/1.model_building.py
+          flake8 src/models/2.evaluation.py
+          flake8 src/models/3.model_registry.py
+          flake8 flask-app/app.py
+  
+  
+  dvc: 
+    needs: linting
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: code checkout
+        uses: actions/checkout@v3
+
+      - name: setup python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.12.2'
+
+      - name: install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: run dvc
+        run: dvc repro
+
+
+
+      
