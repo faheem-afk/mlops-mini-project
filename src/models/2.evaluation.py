@@ -7,7 +7,6 @@ import joblib
 import mlflow
 from dotenv import load_dotenv
 from mlflow.models.signature import infer_signature
-import os
 
 load_dotenv()
 mlflow.set_tracking_uri(
