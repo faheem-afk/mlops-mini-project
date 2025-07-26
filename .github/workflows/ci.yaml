@@ -76,7 +76,7 @@ jobs:
         env: 
           CI: ${{ secrets.CI }}
         run: |
-          python -m unittest tests/test_model.py
+          python -m unittest tests/loading_test.py
 
 
 
