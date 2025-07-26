@@ -58,8 +58,7 @@ jobs:
 
       - name: run dvc
         env:
-          MLFLOW_TRACKING_URI: https://dagshub.com/faheem-afk/mlops-mini-project.mlflow
-          MLFLOW_TRACKING_TOKEN: ${{ secrets.CI }}
+          CI: ${{ secrets.CI }}
         run: dvc repro  
 
 

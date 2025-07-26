@@ -7,8 +7,12 @@ import joblib
 import mlflow
 from dotenv import load_dotenv
 from mlflow.models.signature import infer_signature
+import os
 
 load_dotenv()
+token = os.getenv("CI") 
+os.environ['MLFLOW_TRACKING_USERNAME'] = token
+os.environ['MLFLOW_TRACKING_PASSWORD'] = token
 mlflow.set_tracking_uri(
     "https://dagshub.com/faheem-afk/mlops-mini-project.mlflow")
 # dagshub.init(
