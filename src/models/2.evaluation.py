@@ -10,7 +10,7 @@ from mlflow.models.signature import infer_signature
 import os
 
 load_dotenv()
-token = os.getenv("CI") 
+token = os.getenv("CI")
 os.environ['MLFLOW_TRACKING_USERNAME'] = token
 os.environ['MLFLOW_TRACKING_PASSWORD'] = token
 mlflow.set_tracking_uri(
