@@ -43,7 +43,7 @@ class TestModelLoading(unittest.TestCase):
             input_data_df['content'].tolist())
         prediction = self.model.predict(input_transformed)
         self.assertEqual(input_transformed.shape[1],
-                         len(self.vectorizer.get_features_names_out()))
+                         len(self.vectorizer.get_feature_names_out()))
         self.assertEqual(len(prediction), input_data_df.shape.shape[0])
         self.assertEqual(len(prediction), 1)
 
