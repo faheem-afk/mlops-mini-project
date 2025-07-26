@@ -4,7 +4,6 @@ import numpy as np
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 import pandas as pd
-import nltk
 
 train_df = pd.read_csv("data/interim/train_data.csv")
 test_df = pd.read_csv("data/interim/test_data.csv")
