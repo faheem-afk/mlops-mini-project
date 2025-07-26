@@ -38,12 +38,14 @@ class TestModelLoading(unittest.TestCase):
 
     def test_model_signature(self):
         input_text = 'hi how are you'
-        input_df = pd.DataFrame([[input_text]])
-        input_data_df = self.vectorizer.transform(input_df)
-        prediction = self.model.predict(input_data_df)
-        self.assertEqual(input_df.shape[1],
+        input_data_df = pd.DataFrame([[input_text]], columns=['content'])
+        input_transformed = self.vectorizer.transform(
+            input_data_df['content'].tolist())
+        prediction = self.model.predict(input_transformed)
+        self.assertEqual(input_transformed.shape[1],
                          len(self.vectorizer.get_features_names_out()))
-        self.assertEqual(len(prediction), input_df.shape.shape[0])
+        self.assertEqual(len(prediction), input_data_df.shape.shape[0])
+        self.assertEqual(len(prediction), 1)
 
 
 if __name__ == "__main__":
