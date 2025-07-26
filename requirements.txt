@@ -13,3 +13,4 @@ scikit-learn==1.7.1
 scipy==1.16.0
 uvicorn==0.35.0
 flake8
+dvc
