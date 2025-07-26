@@ -10,6 +10,7 @@ train_df = pd.read_csv("data/interim/train_data.csv")
 test_df = pd.read_csv("data/interim/test_data.csv")
 nltk.download('stopwords')
 
+
 def lemmatization(text):
     lemmatizer = WordNetLemmatizer()
     text = text.split()
