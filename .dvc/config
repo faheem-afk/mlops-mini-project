@@ -1,4 +1,4 @@
 [core]
     remote = myremote
 ['remote "myremote"']
-    url = /var/folders/xh/dlr59jp10wj5hx57q_rhfy3c0000gn/T/
+    url = s3://faheem-afk-bucket
