@@ -8,6 +8,7 @@ import mlflow
 from dotenv import load_dotenv
 from mlflow.models.signature import infer_signature
 import os
+import warnings
 
 load_dotenv()
 token = os.getenv("CI")
@@ -17,7 +18,7 @@ mlflow.set_tracking_uri(
     "https://dagshub.com/faheem-afk/mlops-mini-project.mlflow")
 # dagshub.init(
 # repo_owner='faheem-afk', repo_name='mlops-mini-project', mlflow=True)
-# warnings.filterwarnings('ignore')
+warnings.filterwarnings('ignore')
 
 
 def save_model_info(run_id_: str, model_name_: str, file_path_: str):

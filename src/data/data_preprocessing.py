@@ -67,11 +67,9 @@ def normalize_text(df):
     return df
 
 
-# train_processed_data = normalize_text(train_df)
-# test_processed_data = normalize_text(test_df)
+train_processed_data = normalize_text(train_df)
+test_processed_data = normalize_text(test_df)
 if __name__ == "__main__":
-    train_processed_data = train_df
-    test_processed_data = test_df
     os.makedirs('data/preprocessed', exist_ok=True)
     train_processed_data.to_csv(
         "data/preprocessed/train_preprocessed_data.csv", index=False)
