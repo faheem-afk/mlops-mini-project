@@ -74,7 +74,7 @@ jobs:
 
       - name: Run model test_size
         env: 
-          CI: ${{ secrects.CI }}
+          CI: ${{ secrets.CI }}
         run: |
           python -m unittest tests/test_model.py
 
