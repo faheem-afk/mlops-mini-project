@@ -56,5 +56,6 @@ def prediction():
     y_pred = log_model_.predict(transformed_df_)
     return jsonify({'sentiment': f"{y_pred[0]}"})
 
+
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
