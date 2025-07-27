@@ -5,7 +5,6 @@ FROM python:3.12
 WORKDIR /app
 
 # copy
-COPY .env ./
 COPY models/ ./models/
 COPY flask_app/ ./flask_app/
 

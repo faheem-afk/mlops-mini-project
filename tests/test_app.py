@@ -17,11 +17,11 @@ class TestModelLoading(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         warnings.filterwarnings('ignore')
-        dagshub_token = os.getenv("CI")
-        os.environ['MLFLOW_TRACKING_USERNAME'] = dagshub_token
-        os.environ['MLFLOW_TRACKING_PASSWORD'] = dagshub_token
-        mlflow.set_tracking_uri(
-            "https://dagshub.com/faheem-afk/mlops-mini-project.mlflow")
+        # dagshub_token = os.getenv("CI")
+        # os.environ['MLFLOW_TRACKING_USERNAME'] = dagshub_token
+        # os.environ['MLFLOW_TRACKING_PASSWORD'] = dagshub_token
+        # mlflow.set_tracking_uri(
+        #     "https://dagshub.com/faheem-afk/mlops-mini-project.mlflow")
         cls.client = app.app.test_client()
 
     def test_home_page(self):
