@@ -1,14 +1,20 @@
 import os
-import sys
 from flask import Flask, render_template, request, jsonify
 import warnings
 import joblib
 from dotenv import load_dotenv
 import pandas as pd
+import mlflow
+import json
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 load_dotenv()
 warnings.filterwarnings('ignore')
+dagshub_token = os.getenv("CI")
+os.environ['MLFLOW_TRACKING_USERNAME'] = dagshub_token
+os.environ['MLFLOW_TRACKING_PASSWORD'] = dagshub_token
+mlflow.set_tracking_uri(
+    "https://dagshub.com/faheem-afk/mlops-mini-project.mlflow")
+
 app = Flask(__name__)
 # mlflow.set_tracking_uri("https://dagshub.com/faheem-afk/mlops-mini-project.mlflow")
 # dagshub.init(
@@ -20,8 +26,19 @@ app = Flask(__name__)
 # artifact_uri_ = f"runs:/{model_info['run_id']}/vectorizer/vectorizer.joblib"
 # local_path = mlflow.artifacts.download_artifacts(artifact_uri=artifact_uri_)
 # vectorizer_ = joblib.load(local_path)
-log_model_ = joblib.load('models/model.joblib')
-vectorizer_ = joblib.load('models/vectorizer.joblib')
+# log_model_ = joblib.load('models/model.joblib')
+# vectorizer_ = joblib.load('models/vectorizer.joblib')
+model_name = 'logisticRegression'
+model_info = json.load(open('reports/experiment_info.json', 'r'))
+model_uri = f"runs:/{model_info['run_id']}/{model_name}"
+model_uri = f"runs:/{model_info['run_id']}/{model_name}"
+log_model_ = mlflow.sklearn.load_model(model_uri)
+
+artifact_uri_vec = f"""
+runs:/{model_info['run_id']}/vectorizer/vectorizer.joblib"""
+local_path = mlflow.artifacts. \
+    download_artifacts(artifact_uri=artifact_uri_vec)
+vectorizer_ = joblib.load(local_path)
 
 
 @app.route("/")
@@ -39,5 +56,5 @@ def prediction():
     y_pred = log_model_.predict(transformed_df_)
     return jsonify({'sentiment': f"{y_pred[0]}"})
 
-
-app.run(debug=True, port=5000)
+if __name__ == "__main__":
+    app.run(debug=True, port=5000)
