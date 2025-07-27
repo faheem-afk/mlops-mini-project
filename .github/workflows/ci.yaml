@@ -35,7 +35,7 @@ jobs:
           flake8 src/models/1.model_building.py
           flake8 src/models/2.evaluation.py
           flake8 src/models/3.model_registry.py
-          flake8 flask-app/app.py
+          flake8 flask_app/app.py
   
   
   dvc: 
