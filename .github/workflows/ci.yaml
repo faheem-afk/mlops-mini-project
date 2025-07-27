@@ -77,6 +77,7 @@ jobs:
           echo "Execution finished..."
 
       - name: Run model test_size
+        if: success()
         env: 
           CI: ${{ secrets.CI }}
         run: |
@@ -84,6 +85,13 @@ jobs:
           python -m unittest tests/test_model.py
           python -m unittest tests/test_app.py
           echo "Testing finished.."
+
+      - name: Docker Image
+        if: success()
+        run: |
+          docker build -t mlops-doc-img .
+          docker push faheemb/docker_demo:latest
+          
 
 
 
