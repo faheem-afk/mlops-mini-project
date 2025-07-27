@@ -62,6 +62,7 @@ with mlflow.start_run() as run:
     input_examples = X_test_bow.iloc[:5, :]
     mlflow.log_artifact("data/features/test_bow.csv", artifact_path="data")
     mlflow.log_artifact('models/vectorizer.joblib', artifact_path="vectorizer")
+    mlflow.log_artifact("data/features/train_bow.csv", artifact_path="data")
     mlflow.log_artifact("data/features/test_bow.csv", artifact_path="data")
     mlflow.sklearn.log_model(
         log_model,

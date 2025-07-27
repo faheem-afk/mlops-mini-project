@@ -28,15 +28,17 @@ class TestModelLoading(unittest.TestCase):
         model_uri = f"runs:/{model_info['run_id']}/{model_name}"
         cls.model = mlflow.sklearn.load_model(model_uri)
 
-        artifact_uri_ = f"""
+        artifact_uri_vec = f"""
         runs:/{model_info['run_id']}/vectorizer/vectorizer.joblib"""
         local_path = mlflow.artifacts. \
-            download_artifacts(artifact_uri=artifact_uri_)
+            download_artifacts(artifact_uri=artifact_uri_vec)
         cls.vectorizer = joblib.load(local_path)
 
-        return (
-            (cls.model, cls.vectorizer) if
-            (cls.model and cls.vectorizer) else None)
+        artifact_uri_csv = f"""
+        runs:/{model_info['run_id']}/data/train_bow.csv"""
+        local_path_csv = mlflow.artifacts. \
+            download_artifacts(artifact_uri=artifact_uri_csv)
+        cls.holdout_data = pd.read_csv(local_path_csv)
 
     def test_model_loaded(self):
         self.assertIsNotNone(self.model)
@@ -57,9 +59,9 @@ class TestModelLoading(unittest.TestCase):
 
     def test_model(self):
         X_holdout = self.holdout_data.iloc[:, 0:-1]
-        y_hold = self.hold_data.iloc[:, -1]
+        y_hold = self.holdout_data.iloc[:, -1]
 
-        y_pred_new = self.new_model.predict(X_holdout)
+        y_pred_new = self.model.predict(X_holdout)
 
         accuracy_new = accuracy_score(y_hold, y_pred_new)
         precision_new = precision_score(y_hold, y_pred_new)
