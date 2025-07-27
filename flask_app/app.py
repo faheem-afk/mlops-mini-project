@@ -5,7 +5,7 @@ import joblib
 from dotenv import load_dotenv
 import pandas as pd
 import mlflow
-import json
+# import json
 
 load_dotenv()
 warnings.filterwarnings('ignore')
@@ -28,17 +28,20 @@ app = Flask(__name__)
 # vectorizer_ = joblib.load(local_path)
 # log_model_ = joblib.load('models/model.joblib')
 # vectorizer_ = joblib.load('models/vectorizer.joblib')
-model_name = 'logisticRegression'
-model_info = json.load(open('reports/experiment_info.json', 'r'))
-model_uri = f"runs:/{model_info['run_id']}/{model_name}"
-model_uri = f"runs:/{model_info['run_id']}/{model_name}"
-log_model_ = mlflow.sklearn.load_model(model_uri)
+# model_name = 'logisticRegression'
+# model_info = json.load(open('reports/experiment_info.json', 'r'))
+# model_uri = f"runs:/{model_info['run_id']}/{model_name}"
+# model_uri = f"runs:/{model_info['run_id']}/{model_name}"
+# log_model_ = mlflow.sklearn.load_model(model_uri)
 
-artifact_uri_vec = f"""
-runs:/{model_info['run_id']}/vectorizer/vectorizer.joblib"""
-local_path = mlflow.artifacts. \
-    download_artifacts(artifact_uri=artifact_uri_vec)
-vectorizer_ = joblib.load(local_path)
+# artifact_uri_vec = f"""
+# runs:/{model_info['run_id']}/vectorizer/vectorizer.joblib"""
+# local_path = mlflow.artifacts. \
+#     download_artifacts(artifact_uri=artifact_uri_vec)
+# vectorizer_ = joblib.load(local_path)
+
+log_model_ = joblib.load("models/model.joblib")
+vectorizer_ = joblib.load("models/vectorizer.joblib")
 
 
 @app.route("/")
