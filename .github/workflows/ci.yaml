@@ -105,8 +105,15 @@ jobs:
         if: success()
         run: |
           docker build -t ${{secrets.DOCKER_HUB_USERNAME}}/mlops-doc-ci-img:v1 .
-          docker run -p 8888:5000 ${{secrets.DOCKER_HUB_USERNAME}}/mlops-doc-ci-img:v1
+          docker run -d -p 8888:5000 --name my_container ${{secrets.DOCKER_HUB_USERNAME}}/mlops-doc-ci-img:v1
       
+      - name: Wait for app to start
+        run: |
+          for i in {1..10}; do
+            curl --fail http://0.0.0.0:8888 && break
+            sleep 3
+          done
+
       - name: Test docker Image
         if: success()
         run: |
@@ -116,6 +123,9 @@ jobs:
         if: success()
         run: |
           docker push ${{secrets.DOCKER_HUB_USERNAME}}/mlops-doc-ci-img:v1
+
+      - name: Clean up Container
+        run: docker stop my-container && docker rm my-container 
 
 
 
