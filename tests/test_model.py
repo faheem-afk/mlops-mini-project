@@ -30,12 +30,14 @@ class TestModelLoading(unittest.TestCase):
 
         artifact_uri_vec = f"""
         runs:/{model_info['run_id']}/vectorizer/vectorizer.joblib"""
+
         local_path = mlflow.artifacts. \
             download_artifacts(artifact_uri=artifact_uri_vec)
         cls.vectorizer = joblib.load(local_path)
 
         artifact_uri_csv = f"""
         runs:/{model_info['run_id']}/data/train_bow.csv"""
+
         local_path_csv = mlflow.artifacts. \
             download_artifacts(artifact_uri=artifact_uri_csv)
         cls.holdout_data = pd.read_csv(local_path_csv)

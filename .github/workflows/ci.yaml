@@ -29,6 +29,7 @@ jobs:
 
       - name: run flake8
         run: |
+          echo "Linting Started..."
           flake8 src/data/data_ingestion.py
           flake8 src/data/data_preprocessing.py
           flake8 src/features/feature_engineering.py
@@ -36,6 +37,7 @@ jobs:
           flake8 src/models/2.evaluation.py
           flake8 src/models/3.model_registry.py
           flake8 flask_app/app.py
+          echo "Linting Finished..."
   
   
   dvc: 
@@ -70,14 +72,18 @@ jobs:
         run: |
           python -c "import nltk; nltk.download('stopwords')"
           python -c "import nltk; nltk.download('wordnet')"
+          echo "Execution dvc pipeline..."
           dvc repro  
+          echo "Execution finished..."
 
       - name: Run model test_size
         env: 
           CI: ${{ secrets.CI }}
         run: |
+          echo "Running unit tests"
           python -m unittest tests/test_model.py
           python -m unittest tests/test_app.py
+          echo "Testing finished.."
 
 
 
