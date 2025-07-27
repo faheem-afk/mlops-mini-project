@@ -127,7 +127,7 @@ jobs:
 
       - name: deploy to ec2
         if: success()
-        uses: applyboy/ssh-action@v0.1.5
+        uses: appleboy/ssh-action@v0.1.5
         with:
           host: ${{secrets.EC2_HOST}}
           username: ${{secrets.EC2_USER}}
@@ -138,7 +138,7 @@ jobs:
             docker run my-app || true
             docker run -p 80:5000 --name my-app \
               ${{secrets.DOCKER_HUB_USERNAME}}/mlops-doc-ci-img:v1
-              
+
 
 
 
