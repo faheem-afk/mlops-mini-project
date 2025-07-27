@@ -1,19 +1,19 @@
-import os
+# import os
 from flask import Flask, render_template, request, jsonify
-import warnings
+# import warnings
 import joblib
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 import pandas as pd
-import mlflow
+# import mlflow
 # import json
 
-load_dotenv()
-warnings.filterwarnings('ignore')
-dagshub_token = os.getenv("CI")
-os.environ['MLFLOW_TRACKING_USERNAME'] = dagshub_token
-os.environ['MLFLOW_TRACKING_PASSWORD'] = dagshub_token
-mlflow.set_tracking_uri(
-    "https://dagshub.com/faheem-afk/mlops-mini-project.mlflow")
+# load_dotenv()
+# warnings.filterwarnings('ignore')
+# dagshub_token = os.getenv("CI")
+# os.environ['MLFLOW_TRACKING_USERNAME'] = dagshub_token
+# os.environ['MLFLOW_TRACKING_PASSWORD'] = dagshub_token
+# mlflow.set_tracking_uri(
+#     "https://dagshub.com/faheem-afk/mlops-mini-project.mlflow")
 
 app = Flask(__name__)
 # mlflow.set_tracking_uri("https://dagshub.com/faheem-afk/mlops-mini-project.mlflow")
@@ -61,4 +61,4 @@ def prediction():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+    app.run(host='0.0.0.0', debug=True, port=5000)

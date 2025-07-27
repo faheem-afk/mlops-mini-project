@@ -5,14 +5,16 @@ FROM python:3.12
 WORKDIR /app
 
 # copy
-COPY . /app/
+COPY .env ./
+COPY models/ ./models/
+COPY flask_app/ ./flask_app/
 
 # run 
-RUN pip install -r requirements.txt
+RUN pip install -r ./flask_app/requirements.txt
 
 # ports
 EXPOSE 5000
 
 # command
-CMD ["python", "flask_app/app.py"]
+CMD ["gunicorn", "-b", "0.0.0.0:5000", "flask_app.app:app"]
 

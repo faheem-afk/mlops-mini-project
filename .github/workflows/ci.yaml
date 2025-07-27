@@ -76,7 +76,7 @@ jobs:
           dvc repro  
           echo "Execution finished..."
 
-      - name: Run model test_size
+      - name: Run model test
         if: success()
         env: 
           CI: ${{ secrets.CI }}
@@ -85,13 +85,32 @@ jobs:
           python -m unittest tests/test_model.py
           python -m unittest tests/test_app.py
           echo "Testing finished.."
+      
+      - name: Run app test
+        if: success()
+        env: 
+          CI: ${{ secrets.CI }}
+        run: |
+          echo "Running unit tests"
+          python -m unittest tests/test_app.py
+          echo "Testing finished.."
 
-      - name: Docker Image
+      - name: Building docker Image
         if: success()
         run: |
-          docker build -t mlops-doc-img .
-          docker push faheemb/docker_demo:latest
-          
+          docker build -t mlops-doc-img:v1 .
+          docker run -p 8888:5000 mlops-doc-img:v1
+      
+      - name: Test docker Image
+        if: success()
+        run: |
+          python -m tests/test_docker.py
+      
+      - name: Push docker Image
+        if: success()
+        run: |
+          docker push mlops-doc-img:v1
+
 
 
 
