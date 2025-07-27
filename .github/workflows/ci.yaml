@@ -124,7 +124,7 @@ jobs:
           docker push ${{secrets.DOCKER_HUB_USERNAME}}/mlops-doc-ci-img:v1
 
       - name: Clean up Container
-        run: docker stop my-container && docker rm my-container 
+        run: docker stop my_container && docker rm my_container 
 
 
 
