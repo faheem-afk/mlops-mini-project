@@ -125,6 +125,21 @@ jobs:
       - name: Clean up Container
         run: docker stop my_container && docker rm my_container 
 
+      - name: deploy to ec2
+        if: success()
+        uses: applyboy/ssh-action@v0.1.5
+        with:
+          host: ${{secrets.EC2_HOST}}
+          username: ${{secrets.EC2_USER}}
+          key: ${{secrets.EC2_SSH_KEY}}
+          script: |
+            docker pull ${{secrets.DOCKER_HUB_USERNAME}}/mlops-doc-ci-img:v1
+            docker stop my-app || true
+            docker run my-app || true
+            docker run -p 80:5000 --name my-app \
+              ${{secrets.DOCKER_HUB_USERNAME}}/mlops-doc-ci-img:v1
+              
+
 
 
 
