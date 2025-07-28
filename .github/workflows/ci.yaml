@@ -93,17 +93,57 @@ jobs:
           python -m unittest tests/test_app.py
           echo "Testing finished.."
       
-      - name: Login to dockerhub
-        uses: docker/login-action@v2
-        with: 
-          username: ${{secrets.DOCKER_HUB_USERNAME}}
-          password: ${{secrets.DOCKER_HUB_ACCESS_TOKEN}}
+      # - name: Login to dockerhub
+      #   uses: docker/login-action@v2
+      #   with: 
+      #     username: ${{secrets.DOCKER_HUB_USERNAME}}
+      #     password: ${{secrets.DOCKER_HUB_ACCESS_TOKEN}}
+
+      # - name: Building docker Image
+      #   if: success()
+      #   run: |
+      #     docker build -t ${{secrets.DOCKER_HUB_USERNAME}}/mlops-doc-ci-img:v1 .
+      #     docker run -d -p 8888:5000 --name my_container ${{secrets.DOCKER_HUB_USERNAME}}/mlops-doc-ci-img:v1
+      
+      # - name: Wait for app to start
+      #   run: |
+      #     for i in {1..10}; do
+      #       curl --fail http://0.0.0.0:8888 && break
+      #       sleep 3
+      #     done
+
+      # - name: Test docker Image
+      #   if: success()
+      #   run: |
+      #     python -m unittest tests/test_docker.py
+      
+      # - name: Push docker Image
+      #   if: success()
+      #   run: |
+      #     docker push ${{secrets.DOCKER_HUB_USERNAME}}/mlops-doc-ci-img:v1
+
+      # - name: Clean up Container
+      #   run: docker stop my_container && docker rm my_container 
+
+      # - name: deploy to ec2
+      #   if: success()
+      #   uses: appleboy/ssh-action@v0.1.5
+      #   with:
+      #     host: ${{secrets.EC2_HOST}}
+      #     username: ${{secrets.EC2_USER}}
+      #     key: ${{secrets.EC2_SSH_KEY}}
+      #     script: |
+      #       docker pull ${{secrets.DOCKER_HUB_USERNAME}}/mlops-doc-ci-img:v1
+      #       docker stop my-app || true
+      #       docker rm my-app || true
+      #       docker run -d -p 80:5000 --name my-app ${{secrets.DOCKER_HUB_USERNAME}}/mlops-doc-ci-img:v1
+
 
       - name: Building docker Image
         if: success()
         run: |
-          docker build -t ${{secrets.DOCKER_HUB_USERNAME}}/mlops-doc-ci-img:v1 .
-          docker run -d -p 8888:5000 --name my_container ${{secrets.DOCKER_HUB_USERNAME}}/mlops-doc-ci-img:v1
+          docker build -t ${{secrets.AWS_REGISTRY}}/faheem-afk-ecr:v1 .
+          docker run -d -p 8888:5000 --name my_container ${{secrets.AWS_REGISTRY}}/faheem-afk-ecr:v1
       
       - name: Wait for app to start
         run: |
@@ -120,7 +160,7 @@ jobs:
       - name: Push docker Image
         if: success()
         run: |
-          docker push ${{secrets.DOCKER_HUB_USERNAME}}/mlops-doc-ci-img:v1
+          docker push ${{secrets.AWS_REGISTRY}}/faheem-afk-ecr:v1
 
       - name: Clean up Container
         run: docker stop my_container && docker rm my_container 
@@ -133,10 +173,10 @@ jobs:
           username: ${{secrets.EC2_USER}}
           key: ${{secrets.EC2_SSH_KEY}}
           script: |
-            docker pull ${{secrets.DOCKER_HUB_USERNAME}}/mlops-doc-ci-img:v1
+            docker pull ${{secrets.AWS_REGISTRY}}/mlops-doc-ci-img:v1
             docker stop my-app || true
             docker rm my-app || true
-            docker run -d -p 80:5000 --name my-app ${{secrets.DOCKER_HUB_USERNAME}}/mlops-doc-ci-img:v1
+            docker run -d -p 80:5000 --name my-app ${{secrets.AWS_REGISTRY}}/mlops-doc-ci-img:v1
 
 
 
