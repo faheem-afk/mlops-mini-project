@@ -3,7 +3,7 @@
 # Ensure the script runs in non-interactive mode
 export DEBIAN_FRONTEND=noninteractive
 
-# Update the package lists
+# Update the package list
 sudo apt-get update
 
 # install docker
