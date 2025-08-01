@@ -154,7 +154,7 @@ jobs:
       - name: Building docker Image
         if: success()
         run: |
-          docker build -t ${{ secrets.AWS_REGISTRY }}/mlops-mini-project .
+          docker buildx build --platform linux/amd64 -t ${{ secrets.AWS_REGISTRY }}/mlops-mini-project .
           docker run -d -p 8888:5000 --name my_container ${{ secrets.AWS_REGISTRY }}/mlops-mini-project
       
       - name: Wait for app to start
