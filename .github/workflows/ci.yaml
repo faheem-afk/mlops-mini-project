@@ -215,7 +215,7 @@ jobs:
             --s3-location bucket=faheem-afk-bucket, key=deployment.zip, bundleType=zip \
             --file-exists-behavior OVERWRITE \
             --region us-east-1
-            
+
           
           
 
