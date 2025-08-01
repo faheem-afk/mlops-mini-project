@@ -209,9 +209,9 @@ jobs:
           aws configure set aws_access_key_id ${{ secrets.ACCESS_KEY }}
           aws configure set aws_secret_access_key ${{ secrets.SECRET_ACCESS_KEY }}
           aws deploy create-deployment \
-            --application-name faheem-afk-app \
+            --application-name faheem-afk \
             --deployment-config-name CodeDeployDefault.OneAtATime \
-            --deployment-group-name faheem-afk-redeploy \
+            --deployment-group-name faheem-afk-rolling-update \
             --s3-location bucket=faheem-afk-bucket,key=deployment.zip,bundleType=zip \
             --file-exists-behavior OVERWRITE \
             --region us-east-1
