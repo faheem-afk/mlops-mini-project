@@ -211,7 +211,7 @@ jobs:
           aws deploy create-deployment \
             --application-name faheem-afk-app \
             --deployment-config-name CodeDeployDefault.OneAtATime \
-            --deployment-group-name MBlueGreenDeployment \
+            --deployment-group-name faheem-afk-redeploy \
             --s3-location bucket=faheem-afk-bucket,key=deployment.zip,bundleType=zip \
             --file-exists-behavior OVERWRITE \
             --region us-east-1
