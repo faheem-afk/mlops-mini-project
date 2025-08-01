@@ -1,0 +1,14 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /home/ubuntu/app
+hooks:
+  BeforeInstall: 
+  - location: deploy/scripts/install_dependencies.ssh
+    timeout: 300
+    runsas: ubuntu
+  ApplicationStart:
+  - location: deploy/scripts/start_docker.ssh
+    timeout: 300
+    runas: ubuntu
