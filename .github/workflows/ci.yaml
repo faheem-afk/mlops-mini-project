@@ -149,7 +149,7 @@ jobs:
         run: |
           aws configure set aws_access_key_id ${{ secrets.ACCESS_KEY }}
           aws configure set aws_secret_access_key ${{ secrets.SECRET_ACCESS_KEY }}
-          aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin 596514762357.dkr.ecr.eu-west-1.amazonaws.com
+          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 596514762357.dkr.ecr.us-east-1.amazonaws.com
 
       - name: Building docker Image
         if: success()
@@ -172,7 +172,7 @@ jobs:
       - name: Push docker Image
         if: success()
         run: |
-          docker push ${{ secrets.AWS_REGISTRY }}/mlops-mini-project
+          docker push ${{ secrets.AWS_REGISTRY }}/mlops-mini-project:latest
 
       - name: Clean up Container
         run: docker stop my_container && docker rm my_container 
