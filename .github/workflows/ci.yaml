@@ -210,9 +210,9 @@ jobs:
           aws configure set aws_secret_access_key ${{ secrets.SECRET_ACCESS_KEY }}
           aws deploy create-deployment \
             --application-name faheem-afk-app \
-            --deployment-config-name CodeDeployDefault.OneAtTime \
+            --deployment-config-name CodeDeployDefault.OneAtATime \
             --deployment-group-name MBlueGreenDeployment \
-            --s3-location bucket=faheem-afk-bucket, key=deployment.zip, bundleType=zip \
+            --s3-location bucket=faheem-afk-bucket,key=deployment.zip,bundleType=zip \
             --file-exists-behavior OVERWRITE \
             --region us-east-1
 
